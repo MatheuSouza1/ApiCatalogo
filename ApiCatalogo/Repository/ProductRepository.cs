@@ -11,10 +11,10 @@ namespace ApiCatalogo.Repository
         {
         }
 
-        public PagedList<Product> GetProducts(ProductParameters productParameter)
+        public async Task<PagedList<Product>> GetProducts(ProductParameters productParameter)
         {
             //return Get().OrderBy(p => p.Name).Skip((productParameter.pageNumber - 1) * productParameter.pageSize).Take(productParameter.pageSize).ToList();
-            return PagedList<Product>.ToPagedList(Get().OrderBy(p => p.Name), productParameter.pageNumber, productParameter.pageSize);
+            return await PagedList<Product>.ToPagedList(Get().OrderBy(p => p.Name), productParameter.pageNumber, productParameter.pageSize);
         }
 
         public async Task<IEnumerable<Product>> GetProductsPorPreco()

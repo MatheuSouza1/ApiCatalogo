@@ -34,9 +34,9 @@ namespace ApiCatalogo.Controllers
 
         //paginada
         [HttpGet]
-        public ActionResult<IEnumerable<ProductsDTO>> Get([FromQuery] ProductParameters productParameters)
+        public async Task<ActionResult<IEnumerable<ProductsDTO>>> Get([FromQuery] ProductParameters productParameters)
         {
-            var products = _uof.ProdutoRepository.GetProducts(productParameters);
+            var products = await _uof.ProdutoRepository.GetProducts(productParameters);
 
             var metadata = new
             {

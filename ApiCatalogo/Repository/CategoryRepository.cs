@@ -11,9 +11,9 @@ namespace ApiCatalogo.Repository
         {
         }
 
-        public PagedList<Category> GetCategories(CategoryParameters categoryParameters)
+        public async Task<PagedList<Category>> GetCategories(CategoryParameters categoryParameters)
         {
-            return PagedList<Category>.ToPagedList(Get().OrderBy(c => c.Name), categoryParameters.pageNumber, categoryParameters.pageSize);
+            return await PagedList<Category>.ToPagedList(Get().OrderBy(c => c.Name), categoryParameters.pageNumber, categoryParameters.pageSize);
         }
 
         //retorna as categorias e os seus produtos

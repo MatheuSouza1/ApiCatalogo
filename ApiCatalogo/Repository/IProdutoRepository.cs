@@ -5,7 +5,7 @@ namespace ApiCatalogo.Repository
 {
     public interface IProdutoRepository : IRepository<Product>
     {
-        PagedList<Product> GetProducts(ProductParameters productParameters);
+        Task<PagedList<Product>> GetProducts(ProductParameters productParameters);
         Task<IEnumerable<Product>> GetProductsPorPreco();
     }
 }

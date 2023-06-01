@@ -26,9 +26,9 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<CategoryDTO>> Get([FromQuery] CategoryParameters categoryParameters)
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> Get([FromQuery] CategoryParameters categoryParameters)
         {
-            var categorys = _UoW.CategoryRepository.GetCategories(categoryParameters);
+            var categorys = await _UoW.CategoryRepository.GetCategories(categoryParameters);
             if (categorys == null)
             {
                 return NotFound();
