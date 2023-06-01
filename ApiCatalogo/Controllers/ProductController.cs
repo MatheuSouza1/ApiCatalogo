@@ -25,13 +25,14 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpGet("menorpreco")]
-        public ActionResult<IEnumerable<ProductsDTO>> GetProdutosPrecos()
+        public async Task<ActionResult<IEnumerable<ProductsDTO>>> GetProdutosPrecos()
         {
-            var products = _uof.ProdutoRepository.GetProductsPorPreco().ToList();
+            var products = await _uof.ProdutoRepository.GetProductsPorPreco();
             var productsDTO = _mapper.Map<List<ProductsDTO>>(products);
             return productsDTO;
         }
 
+        //paginada
         [HttpGet]
         public ActionResult<IEnumerable<ProductsDTO>> Get([FromQuery] ProductParameters productParameters)
         {
@@ -49,9 +50,9 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpGet("{id:int}", Name = "ObterObjeto")]
-        public ActionResult Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            var product = _uof.ProdutoRepository.GetById(p => p.ProductId == id);
+            var product = await _uof.ProdutoRepository.GetById(p => p.ProductId == id);
             if (product == null)
             {
                 return NotFound();
@@ -61,18 +62,17 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post(ProductsDTO productDTO)
+        public async Task<ActionResult> Post(ProductsDTO productDTO)
         {
             var products = _mapper.Map<Product>(productDTO);
             _uof.ProdutoRepository.Add(products);
-            _uof.Commit();
-
+            await _uof.Commit();
             var productDto = _mapper.Map<ProductsDTO>(products);
             return new CreatedAtRouteResult("ObterObjeto", new { id = products.ProductId, productDto});
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult Put(int id, ProductsDTO productDTO)
+        public async Task<ActionResult> Put(int id, ProductsDTO productDTO)
         {
             if (id != productDTO.ProductId)
             {
@@ -81,20 +81,20 @@ namespace ApiCatalogo.Controllers
 
             var product = _mapper.Map<Product>(productDTO);
             _uof.ProdutoRepository.Update(product);
-            _uof.Commit();
+            await _uof.Commit();
             return Ok();
         }
 
         [HttpDelete]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var product = _uof.ProdutoRepository.GetById(p => p.ProductId == id);
+            var product = await _uof.ProdutoRepository.GetById(p => p.ProductId == id);
             if (product == null)
             {
                 return NotFound();
             }
             _uof.ProdutoRepository.Delete(product);
-            _uof.Commit();
+            await _uof.Commit();
             return Ok();
         }
     }

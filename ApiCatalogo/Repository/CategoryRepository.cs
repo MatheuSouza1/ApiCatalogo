@@ -17,9 +17,9 @@ namespace ApiCatalogo.Repository
         }
 
         //retorna as categorias e os seus produtos
-        public IEnumerable<Category> GetAll()
+        public async Task<IEnumerable<Category>> GetAll()
         {
-            return Get().Include(x => x.Products);
+            return await Get().Include(x => x.Products).ToListAsync();
         }
     }
 }

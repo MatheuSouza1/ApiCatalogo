@@ -51,25 +51,25 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpGet("Products")]
-        public ActionResult<IEnumerable<CategoryDTO>> GetCategoryProducts()
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategoryProducts()
         {
-            var category = _UoW.CategoryRepository.GetAll().ToList();
+            var category = await _UoW.CategoryRepository.GetAll();
             var categorysDTO = _Mapping.Map<List<CategoryDTO>>(category);
             return categorysDTO;
         }
 
         [HttpPost]
-        public ActionResult Post(CategoryDTO categoryDTO)
+        public async Task<ActionResult> Post(CategoryDTO categoryDTO)
         {
             var category = _Mapping.Map<Category>(categoryDTO);
             _UoW.CategoryRepository.Add(category);
-            _UoW.Commit();
+            await _UoW.Commit();
             var categoryDto = _Mapping.Map<CategoryDTO>(categoryDTO);
             return new CreatedAtRouteResult("Objeto", new { id = category.CategoryId, categoryDto });
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult Put(int id, CategoryDTO categoryDto)
+        public async Task<ActionResult> Put(int id, CategoryDTO categoryDto)
         {
             //verificando se o id passado é igual ao passado no body request
             if (categoryDto.CategoryId != id)
@@ -78,20 +78,20 @@ namespace ApiCatalogo.Controllers
             }
             var category = _Mapping.Map<Category>(categoryDto);
             _UoW.CategoryRepository.Update(category);
-            _UoW.Commit();
+            await _UoW.Commit();
             return Ok();
         }
 
         [HttpDelete]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var category = _UoW.CategoryRepository.GetById(category => category.CategoryId == id);
+            var category = await _UoW.CategoryRepository.GetById(category => category.CategoryId == id);
             if (category == null)
             {
                 return NotFound();
             }
             _UoW.CategoryRepository.Delete(category);
-            _UoW.Commit();
+            await _UoW.Commit();
             return Ok();
         }
     }
