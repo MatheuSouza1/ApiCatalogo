@@ -59,7 +59,7 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(CategoryDTO categoryDTO)
+        public async Task<ActionResult> Post([FromBody] CategoryDTO categoryDTO)
         {
             var category = _Mapping.Map<Category>(categoryDTO);
             _UoW.CategoryRepository.Add(category);
