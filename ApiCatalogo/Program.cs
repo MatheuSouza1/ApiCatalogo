@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using ApiCatalogo.DTOs.Mapping;
+using Microsoft.AspNetCore.Identity;
 
 namespace ApiCatalogo
 {
@@ -24,6 +25,8 @@ namespace ApiCatalogo
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApiCatalogoContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApiCatalogoContext>().AddDefaultTokenProviders();
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             var MappinConfig = new MapperConfiguration(mc =>
             {
@@ -43,6 +46,9 @@ namespace ApiCatalogo
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
