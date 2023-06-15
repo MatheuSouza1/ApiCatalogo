@@ -10,9 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using ApiCatalogo.DTOs;
 using ApiCatalogo.Pagination;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApiCatalogo.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase

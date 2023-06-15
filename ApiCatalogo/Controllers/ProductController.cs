@@ -9,9 +9,11 @@ using ApiCatalogo.DTOs;
 using ApiCatalogo.Pagination;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApiCatalogo.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
